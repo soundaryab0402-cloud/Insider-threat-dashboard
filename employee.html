@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Employee Details</title>
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; font-family:'Roboto',sans-serif; }
+        html, body { 
+            height:100%; 
+            width:100%; 
+            display:flex; 
+            justify-content:center; 
+            align-items:flex-start; 
+            background:#121212; 
+            color:#fff;
+            padding-top:50px; /* top space */
+        }
+
+        .container {
+            width: 80%;
+            max-width: 900px;
+            background: #1e1e1e;
+            padding: 50px 60px;
+            border-radius: 20px;
+            box-shadow: 0 0 30px rgba(0,255,255,0.2);
+            text-align:left;
+            font-size: 24px; /* bigger font */
+            line-height: 2; /* spacing between lines */
+        }
+
+        h1 { 
+            text-align:center; 
+            margin-bottom:40px; 
+            font-size:42px; 
+            color:#0ff; 
+            text-shadow:0 0 10px #0ff; 
+        }
+
+        p { margin-bottom:25px; font-size:24px; }
+        ul { margin-left:40px; font-size:22px; }
+        li { margin-bottom:10px; }
+
+        .risk { 
+            font-weight:bold; 
+            padding:12px 25px; 
+            border-radius:10px; 
+            font-size:24px; 
+            display:inline-block; 
+            color:#fff;
+        }
+
+        a { 
+            display:block; 
+            margin-top:40px; 
+            text-align:center; 
+            text-decoration:none; 
+            color:#0ff; 
+            font-size:22px; 
+            text-shadow: 0 0 5px #0ff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Employee Details</h1>
+        <p><strong>Name:</strong> <span id="empName"></span></p>
+        <p><strong>IP Address:</strong> <span id="empIP"></span></p>
+        <p><strong>Abnormal Activities:</strong></p>
+        <ul id="empActivities"></ul>
+        <p><strong>Risk Score:</strong> <span id="empRisk" class="risk"></span></p>
+        <a href="dashboard.html">← Back to Dashboard</a>
+    </div>
+
+    <script>
+        // Get URL parameters
+        const params = new URLSearchParams(window.location.search);
+        const name = params.get("name");
+        const ip = params.get("ip");
+        const risk = params.get("risk");
+        const activityStr = params.get("activity");
+
+        // Fill in details
+        document.getElementById("empName").textContent = name;
+        document.getElementById("empIP").textContent = ip;
+        document.getElementById("empRisk").textContent = risk;
+
+        const riskBadge = document.getElementById("empRisk");
+        if(risk >= 70) riskBadge.style.backgroundColor = "red";
+        else if(risk >= 40) riskBadge.style.backgroundColor = "orange";
+        else riskBadge.style.backgroundColor = "green";
+
+        // Abnormal activities list
+        const activities = activityStr ? activityStr.split('|') : [];
+        const ul = document.getElementById("empActivities");
+        activities.forEach(act => {
+            const li = document.createElement("li");
+            li.textContent = act;
+            ul.appendChild(li);
+        });
+    </script>
+</body>
+</html>
